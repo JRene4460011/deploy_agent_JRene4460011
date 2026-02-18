@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 #Project Factory
 
-# Implementing Process Management (The Trap). Decided to bring this logic at the top to ensure it works well with the read command.
+
+
+
+##### Implementing Process Management (The Trap). Decided to bring this logic at the top to ensure it works well with the read command.
 
 bundle_directory_before_exiting() {
 
@@ -25,7 +28,11 @@ bundle_directory_before_exiting() {
 trap bundle_directory_before_exiting SIGINT
 
 
-# Implementing the Directory Architecture
+
+
+
+
+##### Implementing the Directory Architecture
 read -p "Creating the directory. Please provide a name to be attached to the directory name: " input
 directory="attendance_tracker_$input"
 
@@ -94,7 +101,12 @@ fi
 
 sleep 1
 
-# Dynamic configuration --- asking the user whether they'd like to update the attendance thresholds.
+
+
+
+
+
+##### Dynamic configuration --- asking the user whether they'd like to update the attendance thresholds.
 
 echo "--------------------------------------------------------------------------------------------------------------------"
 echo "Dynamic configuration: deciding on whether to update the attendance thresholds."
@@ -121,9 +133,16 @@ fi
 
 
 
+##### Environment validation --- a "Health Check" to ensure python3 is installed on the local system 
 
+echo "Running environment Health Check..."
 
-
+sleep 1.5
+if python3 --version >/dev/null 2>&1; then
+	echo "Success: Python3 is installed on your local system."
+else 
+	echo "Warning: Python3 is not installed on your local system."
+fi
 
 
 
