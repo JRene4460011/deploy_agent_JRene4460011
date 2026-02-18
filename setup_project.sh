@@ -100,11 +100,12 @@ bundle_directory_before_exiting() {
 	mkdir "$directory_archive"
 
 	cp -r "$directory"/. "$directory_archive"/
-	echo "Directory bundled into $directory_archive."
+ 	rm -rf "$directory"
+	echo "The incomplete directory is bundled into $directory_archive and deleted to keep the workspace clean."
 
 }
 
-bundle_directory_before_exiting
+trap bundle_directory_before_exiting SIGINT
 
 
 
