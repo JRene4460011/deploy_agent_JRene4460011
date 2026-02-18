@@ -96,10 +96,10 @@ fi
 
 bundle_directory_before_exiting() {
 
-	directory_archive="attendance_tracker_$(input)_archive"
+	directory_archive="attendance_tracker_${input}_archive"
 	mkdir "$directory_archive"
 
-	cp -r $directory $directory_archive/
+	cp -r "$directory"/. "$directory_archive"/
 	echo "Directory bundled into $directory_archive."
 
 }
