@@ -1,6 +1,31 @@
 #!/usr/bin/env bash
 #Project Factory
 
+# Implementing Process Management (The Trap). Decided to bring this logic at the top to ensure it works well with the read command.
+
+bundle_directory_before_exiting() {
+
+        echo -e "\nTrapped Ctrl+C! We're bundling the current project state..."
+
+        directory_archive="attendance_tracker_${input}_archive"
+
+        if [ -d "$directory_archive" ]; then
+                rm -rf "$directory_archive"
+        fi
+
+        mkdir -p "$directory_archive"
+
+        cp -r "$directory"/. "$directory_archive"/
+        rm -rf "$directory"
+
+        echo "The incomplete directory is bundled into $directory_archive and deleted to keep the workspace clean."
+        exit 1
+}
+
+trap bundle_directory_before_exiting SIGINT
+
+
+# Implementing the Directory Architecture
 read -p "Creating the directory. Please provide a name to be attached to the directory name: " input
 directory="attendance_tracker_$input"
 
@@ -92,20 +117,6 @@ if [ -n "$failure" ]; then
 fi
 
 
-# Implementing Process Management (The Trap)
-
-bundle_directory_before_exiting() {
-
-	directory_archive="attendance_tracker_${input}_archive"
-	mkdir "$directory_archive"
-
-	cp -r "$directory"/. "$directory_archive"/
- 	rm -rf "$directory"
-	echo "The incomplete directory is bundled into $directory_archive and deleted to keep the workspace clean."
-
-}
-
-trap bundle_directory_before_exiting SIGINT
 
 
 
