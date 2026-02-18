@@ -13,7 +13,7 @@ else
 fi
 
 echo "Creating the $directory files and sub-directories..."
-sleep 2
+sleep 1.5
 
 # Here I'm checking whetherthe attendance_checker.py file exists within the main folder/directory.
 if [ -f "$directory/attendance_checker.py" ]; then
@@ -77,16 +77,34 @@ echo "Dynamic configuration: deciding on whether to update the attendance thresh
 read -p "Would you like to update the value of Warning (default 75%)? If no, leave the space blank. If yes, write here the new value: " warning
 read -p "Would you like to update the value of Failure (default 50%)? If no, leave the space blank. If yes, write here the new value: " failure
 
+config_file="$directory/Helpers/config.json"
+
+if [ -n "$warning" ]; then
+    escaped_warning=$(printf '%s\n' "$warning" | sed 's/[&/\]/\\&/g')
+    sed -i "s|\"warning\": [0-9]\+|\"warning\": $escaped_warning|" "$config_file"
+    echo "Updated warning threshold to $escaped_warning"
+fi
+
+if [ -n "$failure" ]; then
+    escaped_failure=$(printf '%s\n' "$failure" | sed 's/[&/\]/\\&/g')
+    sed -i "s|\"failure\": [0-9]\+|\"failure\": $escaped_failure|" "$config_file"
+    echo "Updated failure threshold to $escaped_failure"
+fi
 
 
+# Implementing Process Management (The Trap)
 
+bundle_directory_before_exiting() {
 
+	directory_archive="attendance_tracker_$(input)_archive"
+	mkdir "$directory_archive"
 
+	cp -r $directory $directory_archive/
+	echo "Directory bundled into $directory_archive."
 
+}
 
-
-
-
+bundle_directory_before_exiting
 
 
 
