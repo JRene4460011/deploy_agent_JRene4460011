@@ -10,18 +10,22 @@ bundle_directory_before_exiting() {
 
         echo -e "\nTrapped Ctrl+C! We're bundling the current project state..."
 
-        directory_archive="attendance_tracker_${input}_archive"
+        if [ "$input" ]; then
+		directory_archive="attendance_tracker_${input}_archive"
+		if [ -d "$directory_archive" ]; then
+        	        rm -rf "$directory_archive"
+        	fi
 
-        if [ -d "$directory_archive" ]; then
-                rm -rf "$directory_archive"
-        fi
+        	mkdir -p "$directory_archive"
 
-        mkdir -p "$directory_archive"
+        	cp -r "$directory"/. "$directory_archive"/
+        	rm -rf "$directory"
 
-        cp -r "$directory"/. "$directory_archive"/
-        rm -rf "$directory"
+        	echo "The incomplete directory is bundled into $directory_archive and deleted to keep the workspace clean."
+	else 
+		echo "No bundling because you had not yet provided a name to attach on the directory name"
+	fi
 
-        echo "The incomplete directory is bundled into $directory_archive and deleted to keep the workspace clean."
         exit 1
 }
 
